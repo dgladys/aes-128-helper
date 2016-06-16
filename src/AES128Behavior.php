@@ -23,6 +23,9 @@ class AES128Behavior extends Behavior
      */
     public $encryptedAttributes = [];
 
+    /** @var array  */
+    protected $oldAttributes = [];
+
     /**
      * @var string 15-chars key
      */
@@ -51,7 +54,10 @@ class AES128Behavior extends Behavior
     {
         return [
             ActiveRecord::EVENT_BEFORE_INSERT => 'encryptBeforeSave',
-            ActiveRecord::EVENT_BEFORE_UPDATE => 'encryptBeforeSave'
+            ActiveRecord::EVENT_BEFORE_UPDATE => 'encryptBeforeSave',
+            ActiveRecord::EVENT_AFTER_INSERT => 'cleanAfterSave',
+            ActiveRecord::EVENT_AFTER_UPDATE => 'cleanAfterSave',
+            ActiveRecord::EVENT_AFTER_FIND => 'decryptAfterFind'
         ];
     }
 
@@ -63,8 +69,34 @@ class AES128Behavior extends Behavior
     {
         /** @var \yii\db\ActiveRecord $owner */
         $owner = $this->owner;
+        $this->oldAttributes = $owner->getAttributes($this->encryptedAttributes);
         foreach ($this->encryptedAttributes as $attributeName) {
             $owner->setAttribute($attributeName, AES128::encrypt($owner->getAttribute($attributeName)), $this->encryptKey);
+        }
+    }
+
+    /**
+     * Clean data after save
+     * @param \yii\base\Event $event
+     */
+    public function cleanAfterSave($event)
+    {
+        /** @var \yii\db\ActiveRecord $owner */
+        $owner = $this->owner;
+        $owner->setAttributes($this->oldAttributes);
+    }
+
+    /**
+     * Decrypt data after find
+     * @param \yii\base\Event $event
+     */
+    public function decryptAfterFind($event)
+    {
+        /** @var \yii\db\ActiveRecord $owner */
+        $owner = $this->owner;
+
+        foreach ($owner->getAttributes($this->encryptedAttributes) as $attributeName => $value) {
+            $owner->setAttribute($attributeName, AES128::decrypt($value, $this->encryptKey));
         }
     }
 }
