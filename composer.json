@@ -1,6 +1,7 @@
 {
     "name": "dgladys/aes-128-helper",
     "description": "Encrypt and decrypt AES-128 data",
+    "license": "MIT",
     "authors": [
         {
             "name": "Damian Gladys",
