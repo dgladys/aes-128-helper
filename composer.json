@@ -7,5 +7,10 @@
             "email": "damian.gladys.cracow@gmail.com"
         }
     ],
-    "require": {}
+    "require": {},
+    "autoload": {
+        "psr-0": {
+            "dgladys\\aes128helper":        "src/"
+        }
+    }
 }
