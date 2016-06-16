@@ -8,7 +8,10 @@
             "email": "damian.gladys.cracow@gmail.com"
         }
     ],
-    "require": {},
+    "require": {
+        "php": ">=5.4.0",
+        "yiisoft/yii2": "2.*"
+    },
     "autoload": {
         "psr-4": {
             "dgladys\\aes128helper\\":        "src/"
