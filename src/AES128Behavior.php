@@ -23,13 +23,15 @@ class AES128Behavior extends Behavior
      */
     public $encryptedAttributes = [];
 
-    /** @var array  */
-    protected $oldAttributes = [];
-
     /**
      * @var string 15-chars key
      */
     public $encryptKey = null;
+
+    /** @var array Need to temporarily store original attributes of active record while saving encoded attributes to db.
+     *             After this the original decrypted attributes are restored to active record.
+     */
+    protected $oldAttributes = [];
 
     /**
      * @return array
@@ -71,7 +73,7 @@ class AES128Behavior extends Behavior
         $owner = $this->owner;
         $this->oldAttributes = $owner->getAttributes($this->encryptedAttributes);
         foreach ($this->encryptedAttributes as $attributeName) {
-            $owner->setAttribute($attributeName, AES128::encrypt($owner->getAttribute($attributeName)), $this->encryptKey);
+            $owner->setAttribute($attributeName, AES128::encrypt($owner->getAttribute($attributeName), $this->encryptKey));
         }
     }
 
