@@ -9,8 +9,8 @@
     ],
     "require": {},
     "autoload": {
-        "psr-0": {
-            "dgladys\\aes128helper":        "src/"
+        "psr-4": {
+            "dgladys\\aes128helper\\":        "src/"
         }
     }
 }
