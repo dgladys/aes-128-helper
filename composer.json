@@ -1,0 +1,11 @@
+{
+    "name": "dgladys/aes-128-helper",
+    "description": "Encrypt and decrypt AES-128 data",
+    "authors": [
+        {
+            "name": "Damian Gladys",
+            "email": "damian.gladys.cracow@gmail.com"
+        }
+    ],
+    "require": {}
+}
